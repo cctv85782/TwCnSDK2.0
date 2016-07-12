@@ -139,10 +139,12 @@ namespace LeagueSharp.SDK
                         <= input.Unit.Distance(endP) / dashData.Speed + input.RealRadius / input.Unit.MoveSpeed)
                     {
                         return new PredictionOutput
-                                   {
-                                       Input = input, CastPosition = endP, UnitPosition = endP,
-                                       Hitchance = HitChance.Dashing
-                                   };
+                        {
+                            Input = input,
+                            CastPosition = endP,
+                            UnitPosition = endP,
+                            Hitchance = HitChance.Dashing
+                        };
                     }
                 }
 
@@ -166,10 +168,12 @@ namespace LeagueSharp.SDK
         internal static PredictionOutput GetImmobilePrediction(PredictionInput input, double remainingImmobileT)
         {
             var result = new PredictionOutput
-                             {
-                                 Input = input, CastPosition = input.Unit.ServerPosition,
-                                 UnitPosition = input.Unit.ServerPosition, Hitchance = HitChance.High
-                             };
+            {
+                Input = input,
+                CastPosition = input.Unit.ServerPosition,
+                UnitPosition = input.Unit.ServerPosition,
+                Hitchance = HitChance.High
+            };
             var timeToReachTargetPosition = input.Delay
                                             + (Math.Abs(input.Speed - float.MaxValue) > float.Epsilon
                                                    ? input.Unit.Distance(input.From) / input.Speed
@@ -200,10 +204,12 @@ namespace LeagueSharp.SDK
             if (path.Count <= 1)
             {
                 return new PredictionOutput
-                           {
-                               Input = input, UnitPosition = input.Unit.ServerPosition,
-                               CastPosition = input.Unit.ServerPosition, Hitchance = HitChance.VeryHigh
-                           };
+                {
+                    Input = input,
+                    UnitPosition = input.Unit.ServerPosition,
+                    CastPosition = input.Unit.ServerPosition,
+                    Hitchance = HitChance.VeryHigh
+                };
             }
 
             var pLength = path.PathLength();
@@ -231,10 +237,12 @@ namespace LeagueSharp.SDK
                                        : tDistance + input.RealRadius);
 
                         return new PredictionOutput
-                                   {
-                                       Input = input, CastPosition = cp.ToVector3(), UnitPosition = p.ToVector3(),
-                                       Hitchance = HitChance.High
-                                   };
+                        {
+                            Input = input,
+                            CastPosition = cp.ToVector3(),
+                            UnitPosition = p.ToVector3(),
+                            Hitchance = HitChance.High
+                        };
                     }
 
                     tDistance -= d;
@@ -290,10 +298,12 @@ namespace LeagueSharp.SDK
                         }*/
 
                         return new PredictionOutput
-                                   {
-                                       Input = input, CastPosition = pos.ToVector3(), UnitPosition = p.ToVector3(),
-                                       Hitchance = HitChance.High
-                                   };
+                        {
+                            Input = input,
+                            CastPosition = pos.ToVector3(),
+                            UnitPosition = p.ToVector3(),
+                            Hitchance = HitChance.High
+                        };
                     }
 
                     tT += tB;
@@ -302,7 +312,7 @@ namespace LeagueSharp.SDK
 
             var position = path.Last().ToVector3();
             return new PredictionOutput
-                       { Input = input, CastPosition = position, UnitPosition = position, Hitchance = HitChance.Medium };
+            { Input = input, CastPosition = position, UnitPosition = position, Hitchance = HitChance.Medium };
         }
 
         /// <summary>
@@ -468,8 +478,8 @@ namespace LeagueSharp.SDK
 
             var wayPoints = hero.GetWaypoints();
             var lastWaypoint = wayPoints.Last();
-            var heroServerPos = hero.ServerPosition.ToVector2();
             var heroPos = hero.Position;
+            var heroServerPos = hero.ServerPosition.ToVector2();
             var distHeroToWaypoint = heroServerPos.Distance(lastWaypoint);
             var distHeroToFrom = heroServerPos.Distance(input.From);
             var distFromToWaypoint = input.From.Distance(lastWaypoint);
@@ -478,7 +488,7 @@ namespace LeagueSharp.SDK
                         + (Math.Abs(input.Speed - float.MaxValue) > float.Epsilon ? distHeroToFrom / input.Speed : 0);
             var moveArea = hero.MoveSpeed * delay;
             var fixRange = moveArea * 0.35f;
-            var minPath = 800 + moveArea;
+            var minPath = 1000;
 
             if (input.Type == SkillshotType.SkillshotCircle)
             {
@@ -490,7 +500,35 @@ namespace LeagueSharp.SDK
                 return HitChance.Medium;
             }
 
-            if (distHeroToWaypoint > 0 && distHeroToWaypoint < 50)
+            if (distHeroToWaypoint > 0)
+            {
+                if (angle < 20 || angle > 160 || (angle > 130 && distHeroToWaypoint > 400))
+                {
+                    return HitChance.VeryHigh;
+                }
+
+                var wallPoints = new List<Vector2>();
+
+                for (var i = 1; i <= 15; i++)
+                {
+                    var circleAngle = i * 2 * Math.PI / 15;
+                    var point = new Vector2(
+                        heroPos.X + 350 * (float)Math.Cos(circleAngle),
+                        heroPos.Y + 350 * (float)Math.Sin(circleAngle));
+
+                    if (point.IsWall())
+                    {
+                        wallPoints.Add(point);
+                    }
+                }
+
+                if (wallPoints.Count > 2 && !wallPoints.Any(i => heroPos.Distance(i) > lastWaypoint.Distance(i)))
+                {
+                    return HitChance.VeryHigh;
+                }
+            }
+
+            if (distHeroToWaypoint > 0 && distHeroToWaypoint < 100)
             {
                 return HitChance.Medium;
             }
@@ -512,6 +550,11 @@ namespace LeagueSharp.SDK
                 return HitChance.VeryHigh;
             }
 
+            if (GamePath.PathTracker.GetCurrentPath(hero).Time > 0.25d)
+            {
+                return HitChance.VeryHigh;
+            }
+
             if (distHeroToWaypoint > minPath)
             {
                 return HitChance.VeryHigh;
@@ -526,34 +569,6 @@ namespace LeagueSharp.SDK
                 && distHeroToWaypoint > fixRange)
             {
                 return HitChance.VeryHigh;
-            }
-
-            if (distHeroToWaypoint > 0)
-            {
-                if (angle < 20 || angle > 150)
-                {
-                    return HitChance.VeryHigh;
-                }
-
-                var wallPoints = new List<Vector2>();
-
-                for (var i = 1; i <= 15; i++)
-                {
-                    var circleAngle = i * 2 * Math.PI / 15;
-                    var point = new Vector2(
-                        heroPos.X + 450 * (float)Math.Cos(circleAngle),
-                        heroPos.Y + 450 * (float)Math.Sin(circleAngle));
-
-                    if (point.IsWall())
-                    {
-                        wallPoints.Add(point);
-                    }
-                }
-
-                if (wallPoints.Count > 2 && !wallPoints.Any(i => heroPos.Distance(i) > lastWaypoint.Distance(i)))
-                {
-                    return HitChance.VeryHigh;
-                }
             }
 
             return HitChance.Medium;
@@ -599,11 +614,6 @@ namespace LeagueSharp.SDK
             if (data.Path.Count < 3)
             {
                 return false;
-            }
-
-            if (data.Path[1].Tick == data.StopTick)
-            {
-                return true;
             }
 
             if (data.Path[2].Tick - data.Path[1].Tick < 180 && Variables.TickCount - data.Path[2].Tick < 90)

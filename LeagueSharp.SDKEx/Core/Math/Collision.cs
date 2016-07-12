@@ -49,44 +49,44 @@ namespace LeagueSharp.SDK
         static Collision()
         {
             GameObject.OnCreate += (sender, args) =>
+            {
+                var missile = sender as MissileClient;
+                var spellCaster = missile?.SpellCaster as Obj_AI_Hero;
+
+                if (spellCaster == null || spellCaster.ChampionName != "Yasuo"
+                    || spellCaster.Team == GameObjects.Player.Team)
                 {
-                    var missile = sender as MissileClient;
-                    var spellCaster = missile?.SpellCaster as Obj_AI_Hero;
+                    return;
+                }
 
-                    if (spellCaster == null || spellCaster.ChampionName != "Yasuo"
-                        || spellCaster.Team == GameObjects.Player.Team)
-                    {
-                        return;
-                    }
-
-                    switch (missile.SData.Name)
-                    {
-                        case "YasuoWMovingWallMisL":
-                            yasuoWallLeft = missile;
-                            break;
-                        case "YasuoWMovingWallMisR":
-                            yasuoWallRight = missile;
-                            break;
-                    }
-                };
+                switch (missile.SData.Name)
+                {
+                    case "YasuoWMovingWallMisL":
+                        yasuoWallLeft = missile;
+                        break;
+                    case "YasuoWMovingWallMisR":
+                        yasuoWallRight = missile;
+                        break;
+                }
+            };
             GameObject.OnDelete += (sender, args) =>
+            {
+                var missile = sender as MissileClient;
+
+                if (missile == null)
                 {
-                    var missile = sender as MissileClient;
+                    return;
+                }
 
-                    if (missile == null)
-                    {
-                        return;
-                    }
-
-                    if (missile.Compare(yasuoWallLeft))
-                    {
-                        yasuoWallLeft = null;
-                    }
-                    else if (missile.Compare(yasuoWallRight))
-                    {
-                        yasuoWallRight = null;
-                    }
-                };
+                if (missile.Compare(yasuoWallLeft))
+                {
+                    yasuoWallLeft = null;
+                }
+                else if (missile.Compare(yasuoWallRight))
+                {
+                    yasuoWallRight = null;
+                }
+            };
         }
 
         #endregion
@@ -121,7 +121,10 @@ namespace LeagueSharp.SDK
                                 minion.IsValidTarget(
                                     Math.Min(input.Range + input.Radius + 100, 2000),
                                     true,
-                                    input.RangeCheckFrom) && IsHitCollision(minion, input, position, 20)));
+                                    input.RangeCheckFrom)
+                                && (minion.Distance(input.From) < 10 + minion.BoundingRadius
+                                    || minion.Distance(position) < minion.BoundingRadius
+                                    || IsHitCollision(minion, input, position, minion.IsMoving ? 50 : 15))));
                 }
 
                 if (input.CollisionObjects.HasFlag(CollisionableObjects.Heroes))
@@ -195,13 +198,12 @@ namespace LeagueSharp.SDK
             }
 
             inputSub.Unit = collision;
-            var radius = inputSub.Radius + inputSub.Unit.BoundingRadius;
-            var predPos = Movement.GetPrediction(inputSub, false, false).UnitPosition.ToVector2();
 
-            return (collision is Obj_AI_Minion
-                    && (predPos.Distance(inputSub.From) < radius || predPos.Distance(pos) < radius))
-                   || predPos.DistanceSquared(inputSub.From.ToVector2(), pos.ToVector2(), true)
-                   <= Math.Pow(radius + extraRadius, 2);
+            return
+                Movement.GetPrediction(inputSub, false, false)
+                    .UnitPosition.ToVector2()
+                    .DistanceSquared(inputSub.From.ToVector2(), pos.ToVector2(), true)
+                <= Math.Pow(inputSub.Radius + inputSub.Unit.BoundingRadius + extraRadius, 2);
         }
 
         #endregion
