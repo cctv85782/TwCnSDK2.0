@@ -66,18 +66,20 @@
             {
                 var selectLanguage = SandboxConfig.SelectedLanguage;
 
-                if (selectLanguage == "Chinese")
-                {
-                    LoadLanguage("Chinese");
-                }
-                else if (selectLanguage == "Traditional-Chinese")
-                {
-                    LoadLanguage("TraditionalChinese");
-                }
-                else
-                {
-                    LoadLanguage("TraditionalChinese");
-                }
+                LoadLanguage("Chinese");
+
+                //if (selectLanguage == "Chinese")
+                //{
+                //    LoadLanguage("Chinese");
+                //}
+                //else if (selectLanguage == "Traditional-Chinese")
+                //{
+                //    LoadLanguage("TraditionalChinese");
+                //}
+                //else
+                //{
+                //    // ignore
+                //}
             }
             catch (Exception ex)
             {

@@ -25,6 +25,7 @@ namespace LeagueSharp.SDK.Utils
     using System.Runtime.Caching;
     using System.Security.Cryptography;
     using System.Text;
+
     /// <summary>
     ///     Represents the type that implements an in-memory cache.
     /// </summary>

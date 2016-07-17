@@ -49,44 +49,44 @@ namespace LeagueSharp.SDK
         static Collision()
         {
             GameObject.OnCreate += (sender, args) =>
-            {
-                var missile = sender as MissileClient;
-                var spellCaster = missile?.SpellCaster as Obj_AI_Hero;
-
-                if (spellCaster == null || spellCaster.ChampionName != "Yasuo"
-                    || spellCaster.Team == GameObjects.Player.Team)
                 {
-                    return;
-                }
+                    var missile = sender as MissileClient;
+                    var spellCaster = missile?.SpellCaster as Obj_AI_Hero;
 
-                switch (missile.SData.Name)
-                {
-                    case "YasuoWMovingWallMisL":
-                        yasuoWallLeft = missile;
-                        break;
-                    case "YasuoWMovingWallMisR":
-                        yasuoWallRight = missile;
-                        break;
-                }
-            };
+                    if (spellCaster == null || spellCaster.ChampionName != "Yasuo"
+                        || spellCaster.Team == GameObjects.Player.Team)
+                    {
+                        return;
+                    }
+
+                    switch (missile.SData.Name)
+                    {
+                        case "YasuoWMovingWallMisL":
+                            yasuoWallLeft = missile;
+                            break;
+                        case "YasuoWMovingWallMisR":
+                            yasuoWallRight = missile;
+                            break;
+                    }
+                };
             GameObject.OnDelete += (sender, args) =>
-            {
-                var missile = sender as MissileClient;
+                {
+                    var missile = sender as MissileClient;
 
-                if (missile == null)
-                {
-                    return;
-                }
+                    if (missile == null)
+                    {
+                        return;
+                    }
 
-                if (missile.Compare(yasuoWallLeft))
-                {
-                    yasuoWallLeft = null;
-                }
-                else if (missile.Compare(yasuoWallRight))
-                {
-                    yasuoWallRight = null;
-                }
-            };
+                    if (missile.Compare(yasuoWallLeft))
+                    {
+                        yasuoWallLeft = null;
+                    }
+                    else if (missile.Compare(yasuoWallRight))
+                    {
+                        yasuoWallRight = null;
+                    }
+                };
         }
 
         #endregion

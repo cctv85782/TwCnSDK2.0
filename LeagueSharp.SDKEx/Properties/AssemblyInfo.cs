@@ -20,8 +20,8 @@ using System.Resources;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("LeagueSharp.SDKEx")]
-[assembly: AssemblyDescription("2.0.SDKEx By:NightMoon")]
-[assembly: AssemblyConfiguration("PlaySharp2.0 By:CjShu")]
+[assembly: AssemblyDescription("LeagueSharp Experimental Software Development Kit")]
+[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("LeagueSharp")]
 [assembly: AssemblyProduct("LeagueSharp SDKEx")]
 [assembly: AssemblyCopyright("Copyright © LeagueSharp 2016")]
@@ -29,6 +29,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: Guid("e4860c36-20f0-4ca9-ad94-aa71eae94e8e")]
-[assembly: AssemblyVersion("3.1.5.715")]
-[assembly: AssemblyFileVersion("3.1.5.715")]
+[assembly: AssemblyVersion("30.15.07.17")]
+[assembly: AssemblyFileVersion("3.0.1.5")]
 [assembly: NeutralResourcesLanguage("en")]

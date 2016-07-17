@@ -1,4 +1,4 @@
-// <copyright file="DamageLibrary.cs" company="LeagueSharp">
+﻿// <copyright file="DamageLibrary.cs" company="LeagueSharp">
 //    Copyright (c) 2015 LeagueSharp.
 // 
 //    This program is free software: you can redistribute it and/or modify
@@ -47,10 +47,10 @@ namespace LeagueSharp.SDK
         internal static void Initialize()
         {
             Events.OnLoad += (sender, args) =>
-            {
-                DamageCollection = Data.Get<DamageDatabase>().Damage;
-                CreatePassives();
-            };
+                {
+                    DamageCollection = Data.Get<DamageDatabase>().Damage;
+                    CreatePassives();
+                };
         }
 
         /// <summary>

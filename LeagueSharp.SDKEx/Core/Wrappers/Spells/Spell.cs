@@ -858,13 +858,10 @@ namespace LeagueSharp.SDK
             return SDK.Collision.GetCollision(
                 to.Select(h => h.ToVector3()).ToList(),
                 new PredictionInput
-                {
-                    From = fromVector2.ToVector3(),
-                    Type = this.Type,
-                    Radius = this.Width,
-                    Delay = delayOverride > 0 ? delayOverride : this.Delay,
-                    Speed = this.Speed
-                });
+                    {
+                        From = fromVector2.ToVector3(), Type = this.Type, Radius = this.Width,
+                        Delay = delayOverride > 0 ? delayOverride : this.Delay, Speed = this.Speed
+                    });
         }
 
         /// <summary>
@@ -993,19 +990,12 @@ namespace LeagueSharp.SDK
             return
                 Movement.GetPrediction(
                     new PredictionInput
-                    {
-                        Unit = unit,
-                        Delay = this.Delay,
-                        Radius = this.Width,
-                        Speed = this.Speed,
-                        From = this.From,
-                        Range = (overrideRange > 0) ? overrideRange : this.Range,
-                        Collision = this.Collision,
-                        Type = this.Type,
-                        RangeCheckFrom = this.RangeCheckFrom,
-                        AoE = aoe,
-                        CollisionObjects = collisionable
-                    });
+                        {
+                            Unit = unit, Delay = this.Delay, Radius = this.Width, Speed = this.Speed, From = this.From,
+                            Range = (overrideRange > 0) ? overrideRange : this.Range, Collision = this.Collision,
+                            Type = this.Type, RangeCheckFrom = this.RangeCheckFrom, AoE = aoe,
+                            CollisionObjects = collisionable
+                        });
         }
 
         /// <summary>
