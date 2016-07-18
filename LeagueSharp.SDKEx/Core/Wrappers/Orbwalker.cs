@@ -129,14 +129,14 @@
             this.mainMenu.Add(new MenuBool("enabledOption", "Enabled", true));
 
             this.mainMenu.MenuValueChanged += (sender, args) =>
-                {
-                    var boolean = sender as MenuBool;
+            {
+                var boolean = sender as MenuBool;
 
-                    if (boolean != null && boolean.Name.Equals("enabledOption"))
-                    {
-                        this.Enabled = boolean.Value;
-                    }
-                };
+                if (boolean != null && boolean.Name.Equals("enabledOption"))
+                {
+                    this.Enabled = boolean.Value;
+                }
+            };
 
             menu.Add(this.mainMenu);
             this.selector = new OrbwalkerSelector(this);
@@ -451,7 +451,7 @@
             }
 
             var eventArgs = new OrbwalkingActionArgs
-                                { Target = gTarget, Process = true, Type = OrbwalkingType.BeforeAttack };
+            { Target = gTarget, Process = true, Type = OrbwalkingType.BeforeAttack };
             this.InvokeAction(eventArgs);
 
             if (!eventArgs.Process)
@@ -500,7 +500,7 @@
                 if (GameObjects.Player.Path.Length > 2)
                 {
                     var eventStopArgs = new OrbwalkingActionArgs
-                                            { Position = posPlayer, Process = true, Type = OrbwalkingType.StopMovement };
+                    { Position = posPlayer, Process = true, Type = OrbwalkingType.StopMovement };
                     this.InvokeAction(eventStopArgs);
 
                     if (eventStopArgs.Process)
@@ -556,7 +556,7 @@
             }
 
             var eventArgs = new OrbwalkingActionArgs
-                                { Position = position, Process = true, Type = OrbwalkingType.Movement };
+            { Position = position, Process = true, Type = OrbwalkingType.Movement };
             this.InvokeAction(eventArgs);
 
             if (!eventArgs.Process)
@@ -995,7 +995,7 @@
                             {
                                 this.orbwalk.InvokeAction(
                                     new OrbwalkingActionArgs
-                                        { Target = minion, Type = OrbwalkingType.NonKillableMinion });
+                                    { Target = minion, Type = OrbwalkingType.NonKillableMinion });
                             }
                             else if (predHealth > 0 && predHealth < GameObjects.Player.GetAutoAttackDamage(minion))
                             {
