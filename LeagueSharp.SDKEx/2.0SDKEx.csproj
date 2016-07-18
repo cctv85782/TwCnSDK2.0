@@ -298,11 +298,9 @@
     <Compile Include="Core\Wrappers\Damages\DamageMastery.cs" />
     <Compile Include="Core\Wrappers\Damages\DamagePassives.cs" />
     <Compile Include="Core\Wrappers\Items.cs" />
+    <Compile Include="Core\Wrappers\Orbwalker.cs" />
     <Compile Include="Core\Wrappers\Spells\LastCast.cs" />
     <Compile Include="Core\Wrappers\Map.cs" />
-    <Compile Include="Core\Wrappers\Orbwalking\OrbwalkerBase.cs" />
-    <Compile Include="Core\Wrappers\Orbwalking\Orbwalker.cs" />
-    <Compile Include="Core\Wrappers\Orbwalking\OrbwalkerSelector.cs" />
     <Compile Include="Core\Wrappers\Spells\LastCastedSpellEntry.cs" />
     <Compile Include="Core\Wrappers\Spells\LastCastPacketSentEntry.cs" />
     <Compile Include="Core\Wrappers\Spells\Spell.cs" />
