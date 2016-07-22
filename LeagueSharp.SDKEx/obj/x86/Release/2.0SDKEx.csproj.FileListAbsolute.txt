@@ -1,0 +1,16 @@
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\bin\Release\LeagueSharp.SDKEx.dll
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\bin\Release\LeagueSharp.SDKEx.pdb
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\bin\Release\LeagueSharp.Data.dll
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\bin\Release\LeagueSharp.dll
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\bin\Release\LeagueSharp.Sandbox.dll
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\bin\Release\Newtonsoft.Json.dll
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\bin\Release\SharpDX.dll
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\bin\Release\LeagueSharp.Data.pdb
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\bin\Release\LeagueSharp.Sandbox.pdb
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\obj\x86\Release\2.0SDKEx.csprojResolveAssemblyReference.cache
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\obj\x86\Release\LeagueSharp.SDK.Properties.Resources.resources
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\obj\x86\Release\LeagueSharp.SDK.Properties.Translations.resources
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\obj\x86\Release\2.0SDKEx.csproj.GenerateResource.Cache
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\obj\x86\Release\LeagueSharp.SDKEx.dll
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\obj\x86\Release\LeagueSharp.SDKEx.pdb
