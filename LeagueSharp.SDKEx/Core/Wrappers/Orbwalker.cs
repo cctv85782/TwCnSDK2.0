@@ -900,7 +900,7 @@
             if (args.Animation.Contains("Spell1") && this.ActiveMode != OrbwalkingMode.None)
             {
                 DelayAction.Add(
-                    args.Animation.EndsWith("c") ? 300 + Game.Ping : 250 + Game.Ping,
+                    args.Animation.EndsWith("c") ? 380 : 285,
                     () =>
                     {
                         Game.SendEmote(Emote.Dance);
@@ -1343,10 +1343,7 @@
                 if (minions)
                 {
                     minionList = OrderEnemyMinions(minionList);
-                    minionList.AddRange(
-                        this.OrderJungleMinions(
-                            GameObjects.Jungle.Where(
-                                j => IsValidUnit(j) && !j.CharData.BaseSkinName.Equals("gangplankbarrel")).ToList()));
+                    minionList.AddRange(this.OrderJungleMinions(GameObjects.Jungle.Where(j => IsValidUnit(j)).ToList()));
                 }
 
                 if (attackWards)
@@ -1384,8 +1381,9 @@
                 if (this.orbwalk.mainMenu["advanced"]["attackBarrels"])
                 {
                     finalMinionList.AddRange(
-                        GameObjects.Jungle.Where(
-                            j => IsValidUnit(j) && j.Health <= 1 && j.CharData.BaseSkinName.Equals("gangplankbarrel"))
+                        GameObjects.AttackableUnits.Where(
+                            j => IsValidUnit(j) && j.Health <= 1 && j.Name.Equals("Barrel"))
+                            .Cast<Obj_AI_Minion>()
                             .ToList());
                 }
 
