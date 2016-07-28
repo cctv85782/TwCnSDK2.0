@@ -125,7 +125,7 @@ namespace LeagueSharp.SDK
                                                  }
                                          };
 
-                if (mainTargetPrediction.Hitchance >= HitChance.Medium)
+                if (mainTargetPrediction.Hitchance >= HitChance.High)
                 {
                     // Add the posible targets in range:
                     posibleTargets.AddRange(GetPossibleTargets(input));
@@ -139,13 +139,14 @@ namespace LeagueSharp.SDK
                         && mecCircle.Center.DistanceSquared(input.RangeCheckFrom) < input.Range * input.Range)
                     {
                         return new PredictionOutput
-                                   {
-                                       AoeTargetsHit = posibleTargets.Select(h => (Obj_AI_Hero)h.Unit).ToList(),
-                                       CastPosition = mecCircle.Center.ToVector3(),
-                                       UnitPosition = mainTargetPrediction.UnitPosition,
-                                       Hitchance = mainTargetPrediction.Hitchance, Input = input,
-                                       AoeHitCount = posibleTargets.Count
-                                   };
+                        {
+                            AoeTargetsHit = posibleTargets.Select(h => (Obj_AI_Hero)h.Unit).ToList(),
+                            CastPosition = mecCircle.Center.ToVector3(),
+                            UnitPosition = mainTargetPrediction.UnitPosition,
+                            Hitchance = mainTargetPrediction.Hitchance,
+                            Input = input,
+                            AoeHitCount = posibleTargets.Count
+                        };
                     }
 
                     float maxdist = -1;
@@ -198,7 +199,7 @@ namespace LeagueSharp.SDK
                                                  }
                                          };
 
-                if (mainTargetPrediction.Hitchance >= HitChance.Medium)
+                if (mainTargetPrediction.Hitchance >= HitChance.High)
                 {
                     // Add the posible targets  in range:
                     posibleTargets.AddRange(GetPossibleTargets(input));
@@ -217,14 +218,16 @@ namespace LeagueSharp.SDK
                     {
                         for (var j = 0; j < posibleTargets.Count; j++)
                         {
-                            if (i != j)
+                            if (i == j)
                             {
-                                var p = (posibleTargets[i].Position + posibleTargets[j].Position) * 0.5f;
+                                continue;
+                            }
 
-                                if (!candidates.Contains(p))
-                                {
-                                    candidates.Add(p);
-                                }
+                            var p = (posibleTargets[i].Position + posibleTargets[j].Position) * 0.5f;
+
+                            if (!candidates.Contains(p))
+                            {
+                                candidates.Add(p);
                             }
                         }
                     }
@@ -247,11 +250,13 @@ namespace LeagueSharp.SDK
                     if (bestCandidateHits > 1 && input.From.DistanceSquared(bestCandidate) > 50 * 50)
                     {
                         return new PredictionOutput
-                                   {
-                                       Hitchance = mainTargetPrediction.Hitchance, AoeHitCount = bestCandidateHits,
-                                       UnitPosition = mainTargetPrediction.UnitPosition,
-                                       CastPosition = bestCandidate.ToVector3(), Input = input
-                                   };
+                        {
+                            Hitchance = mainTargetPrediction.Hitchance,
+                            AoeHitCount = bestCandidateHits,
+                            UnitPosition = mainTargetPrediction.UnitPosition,
+                            CastPosition = bestCandidate.ToVector3(),
+                            Input = input
+                        };
                     }
                 }
 
@@ -312,7 +317,7 @@ namespace LeagueSharp.SDK
                                                  }
                                          };
 
-                if (mainTargetPrediction.Hitchance >= HitChance.Medium)
+                if (mainTargetPrediction.Hitchance >= HitChance.High)
                 {
                     // Add the posible targets  in range:
                     posibleTargets.AddRange(GetPossibleTargets(input));
@@ -384,11 +389,13 @@ namespace LeagueSharp.SDK
                         }
 
                         return new PredictionOutput
-                                   {
-                                       Hitchance = mainTargetPrediction.Hitchance, AoeHitCount = bestCandidateHits,
-                                       UnitPosition = mainTargetPrediction.UnitPosition,
-                                       CastPosition = ((p1 + p2) * 0.5f).ToVector3(), Input = input
-                                   };
+                        {
+                            Hitchance = mainTargetPrediction.Hitchance,
+                            AoeHitCount = bestCandidateHits,
+                            UnitPosition = mainTargetPrediction.UnitPosition,
+                            CastPosition = ((p1 + p2) * 0.5f).ToVector3(),
+                            Input = input
+                        };
                     }
                 }
 
@@ -410,15 +417,15 @@ namespace LeagueSharp.SDK
             internal static Vector2[] GetCandidates(Vector2 from, Vector2 to, float radius, float range)
             {
                 var middlePoint = (from + to) / 2;
-                var intersections = @from.CircleCircleIntersection(middlePoint, radius, from.Distance(middlePoint));
+                var intersections = from.CircleCircleIntersection(middlePoint, radius, from.Distance(middlePoint));
 
                 if (intersections.Length > 1)
                 {
                     var c1 = intersections[0];
                     var c2 = intersections[1];
 
-                    c1 = from + (range * (to - c1).Normalized());
-                    c2 = from + (range * (to - c2).Normalized());
+                    c1 = from + range * (to - c1).Normalized();
+                    c2 = from + range * (to - c2).Normalized();
 
                     return new[] { c1, c2 };
                 }
