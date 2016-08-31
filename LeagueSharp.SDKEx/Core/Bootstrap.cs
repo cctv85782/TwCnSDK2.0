@@ -70,45 +70,63 @@ namespace LeagueSharp.SDK
             var config = new LoggingConfiguration();
 
             var fileTarget = new FileTarget
-                                 {
-                                     FileName = Constants.LogDirectory + "\\${shortdate}.log",
-                                     Layout = "${longdate} ${uppercase:${level}} ${message}",
-                                     ReplaceFileContentsOnEachWrite = true
-                                 };
+            {
+                FileName = Constants.LogDirectory + "\\${shortdate}.log",
+                Layout = "${longdate} ${uppercase:${level}} ${message}",
+                ReplaceFileContentsOnEachWrite = true
+            };
 
             config.AddTarget("file", fileTarget);
             config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, fileTarget));
 
             var coloredConsoleTarget = new ColoredConsoleTarget
-                                           {
-                                               UseDefaultRowHighlightingRules = false,
-                                               Layout =
+            {
+                UseDefaultRowHighlightingRules = false,
+                Layout =
                                                    "${longdate}|${pad:padding=5:inner=${level:uppercase=true}}| ${logger}: ${message}"
-                                           };
+            };
 
             coloredConsoleTarget.RowHighlightingRules.Add(
                 new ConsoleRowHighlightingRule
-                    { Condition = "Level == LogLevel.Trace", ForegroundColor = ConsoleOutputColor.DarkGray });
+                {
+                    Condition = "Level == LogLevel.Trace",
+                    ForegroundColor = ConsoleOutputColor.DarkGray
+                });
 
             coloredConsoleTarget.RowHighlightingRules.Add(
                 new ConsoleRowHighlightingRule
-                    { Condition = "Level == LogLevel.Debug", ForegroundColor = ConsoleOutputColor.Gray });
+                {
+                    Condition = "Level == LogLevel.Debug",
+                    ForegroundColor = ConsoleOutputColor.Gray
+                });
 
             coloredConsoleTarget.RowHighlightingRules.Add(
                 new ConsoleRowHighlightingRule
-                    { Condition = "Level == LogLevel.Info", ForegroundColor = ConsoleOutputColor.White });
+                {
+                    Condition = "Level == LogLevel.Info",
+                    ForegroundColor = ConsoleOutputColor.White
+                });
 
             coloredConsoleTarget.RowHighlightingRules.Add(
                 new ConsoleRowHighlightingRule
-                    { Condition = "Level == LogLevel.Warn", ForegroundColor = ConsoleOutputColor.Yellow });
+                {
+                    Condition = "Level == LogLevel.Warn",
+                    ForegroundColor = ConsoleOutputColor.Yellow
+                });
 
             coloredConsoleTarget.RowHighlightingRules.Add(
                 new ConsoleRowHighlightingRule
-                    { Condition = "Level == LogLevel.Error", ForegroundColor = ConsoleOutputColor.Red });
+                {
+                    Condition = "Level == LogLevel.Error",
+                    ForegroundColor = ConsoleOutputColor.Red
+                });
 
             coloredConsoleTarget.RowHighlightingRules.Add(
                 new ConsoleRowHighlightingRule
-                    { Condition = "Level == LogLevel.Fatal", ForegroundColor = ConsoleOutputColor.Red });
+                {
+                    Condition = "Level == LogLevel.Fatal",
+                    ForegroundColor = ConsoleOutputColor.Red
+                });
 
             config.AddTarget("coloredConsole", coloredConsoleTarget);
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, coloredConsoleTarget);
@@ -119,17 +137,17 @@ namespace LeagueSharp.SDK
 
             // Log unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) =>
-                {
-                    var exception = eventArgs.ExceptionObject as Exception;
+            {
+                var exception = eventArgs.ExceptionObject as Exception;
 
-                    // Check if exception came from us
-                    if (exception != null && exception.Source.Equals(Assembly.GetExecutingAssembly().FullName))
-                    {
-                        // Get the logger from the class that threw the exception and log it
-                        LogManager.GetCurrentClassLogger(new StackTrace().GetFrame(1).GetMethod().DeclaringType)
-                            .Fatal(exception);
-                    }
-                };
+                // Check if exception came from us
+                if (exception != null && exception.Source.Equals(Assembly.GetExecutingAssembly().FullName))
+                {
+                    // Get the logger from the class that threw the exception and log it
+                    LogManager.GetCurrentClassLogger(new StackTrace().GetFrame(1).GetMethod().DeclaringType)
+                        .Fatal(exception);
+                }
+            };
 
             // Initial notification.
             logger.Info("SDKEx Loading");
