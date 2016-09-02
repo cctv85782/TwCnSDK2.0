@@ -88,45 +88,27 @@ namespace LeagueSharp.SDK
 
             coloredConsoleTarget.RowHighlightingRules.Add(
                 new ConsoleRowHighlightingRule
-                {
-                    Condition = "Level == LogLevel.Trace",
-                    ForegroundColor = ConsoleOutputColor.DarkGray
-                });
+                { Condition = "Level == LogLevel.Trace", ForegroundColor = ConsoleOutputColor.DarkGray });
 
             coloredConsoleTarget.RowHighlightingRules.Add(
                 new ConsoleRowHighlightingRule
-                {
-                    Condition = "Level == LogLevel.Debug",
-                    ForegroundColor = ConsoleOutputColor.Gray
-                });
+                { Condition = "Level == LogLevel.Debug", ForegroundColor = ConsoleOutputColor.Gray });
 
             coloredConsoleTarget.RowHighlightingRules.Add(
                 new ConsoleRowHighlightingRule
-                {
-                    Condition = "Level == LogLevel.Info",
-                    ForegroundColor = ConsoleOutputColor.White
-                });
+                { Condition = "Level == LogLevel.Info", ForegroundColor = ConsoleOutputColor.White });
 
             coloredConsoleTarget.RowHighlightingRules.Add(
                 new ConsoleRowHighlightingRule
-                {
-                    Condition = "Level == LogLevel.Warn",
-                    ForegroundColor = ConsoleOutputColor.Yellow
-                });
+                { Condition = "Level == LogLevel.Warn", ForegroundColor = ConsoleOutputColor.Yellow });
 
             coloredConsoleTarget.RowHighlightingRules.Add(
                 new ConsoleRowHighlightingRule
-                {
-                    Condition = "Level == LogLevel.Error",
-                    ForegroundColor = ConsoleOutputColor.Red
-                });
+                { Condition = "Level == LogLevel.Error", ForegroundColor = ConsoleOutputColor.Red });
 
             coloredConsoleTarget.RowHighlightingRules.Add(
                 new ConsoleRowHighlightingRule
-                {
-                    Condition = "Level == LogLevel.Fatal",
-                    ForegroundColor = ConsoleOutputColor.Red
-                });
+                { Condition = "Level == LogLevel.Fatal", ForegroundColor = ConsoleOutputColor.Red });
 
             config.AddTarget("coloredConsole", coloredConsoleTarget);
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, coloredConsoleTarget);

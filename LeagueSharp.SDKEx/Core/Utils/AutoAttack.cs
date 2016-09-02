@@ -32,10 +32,10 @@ namespace LeagueSharp.SDK.Utils
         /// </summary>
         private static readonly string[] AttackResets =
             {
-                "powerfist", "dariusnoxiantacticsonh", "masochism", "fiorae",
-                "gangplankqwrapper", "garenq", "gravesmove", "hecarimramp",
-                "illaoiw", "jaxempowertwo", "jaycehypercharge", "netherblade",
-                "leonashieldofdaybreak", "luciane", "meditate",
+                "asheq", "powerfist", "dariusnoxiantacticsonh", "masochism",
+                "fiorae", "gangplankqwrapper", "garenq", "gravesmove",
+                "hecarimramp", "illaoiw", "jaxempowertwo", "jaycehypercharge",
+                "netherblade", "leonashieldofdaybreak", "luciane", "meditate",
                 "mordekaisermaceofspades", "nasusq", "nautiluspiercinggaze",
                 "takedown", "reksaiq", "renektonpreexecute", "rengarq",
                 "rengarqemp", "riventricleave", "sejuaninorthernwinds",
@@ -65,7 +65,8 @@ namespace LeagueSharp.SDK.Utils
                 "asheqattacknoonhit", "volleyattackwithsound", "volleyattack",
                 "annietibbersbasicattack", "annietibbersbasicattack2",
                 "azirsoldierbasicattack", "azirsundiscbasicattack",
-                "elisespiderlingbasicattack", "heimertyellowbasicattack",
+                "elisespiderlingbasicattack", "gravesbasicattackspread",
+                "gravesautoattackrecoil", "heimertyellowbasicattack",
                 "heimertyellowbasicattack2", "heimertbluebasicattack",
                 "jarvanivcataclysmattack", "kindredwolfbasicattack",
                 "malzaharvoidlingbasicattack", "malzaharvoidlingbasicattack2",
@@ -197,7 +198,7 @@ namespace LeagueSharp.SDK.Utils
         /// </returns>
         public static bool InAutoAttackRange(this AttackableUnit target)
         {
-            return target.IsValidTarget(target.GetRealAutoAttackRange());
+            return target.IsValidTarget() && target.Distance(GameObjects.Player) < target.GetRealAutoAttackRange();
         }
 
         /// <summary>
