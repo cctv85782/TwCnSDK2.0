@@ -66,13 +66,13 @@
 
         private bool enabled;
 
-        private bool isFinishAttack;
+        private bool isFinishAttack, isResetAttack;
 
         private bool isRengarJumping;
 
         private Obj_AI_Base laneClearMinion;
 
-        private int lastAutoAttackOrderTick, lastMovementOrderTick;
+        private int lastBlockOrderTick, lastMovementOrderTick;
 
         #endregion
 
@@ -127,14 +127,14 @@
             this.mainMenu.Add(new MenuBool("enabledOption", "Enabled", true));
 
             this.mainMenu.MenuValueChanged += (sender, args) =>
-                {
-                    var boolean = sender as MenuBool;
+            {
+                var boolean = sender as MenuBool;
 
-                    if (boolean != null && boolean.Name.Equals("enabledOption"))
-                    {
-                        this.Enabled = boolean.Value;
-                    }
-                };
+                if (boolean != null && boolean.Name.Equals("enabledOption"))
+                {
+                    this.Enabled = boolean.Value;
+                }
+            };
 
             menu.Add(this.mainMenu);
             this.selector = new OrbwalkerSelector(this);
@@ -208,24 +208,22 @@
             get
             {
                 return GameObjects.Player.CanAttack && !GameObjects.Player.IsCastingInterruptableSpell()
-                       && !GameObjects.Player.IsDashing()
-                       && Variables.TickCount - this.lastAutoAttackOrderTick >= 70 + Math.Min(60, Game.Ping)
-                       && Variables.TickCount - this.LastAutoAttackTick + Game.Ping / 2 + 25 >= this.AttackDelay * 1000;
+                       && (!GameObjects.Player.IsDashing() || isResetAttack)
+                       && this.lastBlockOrderTick - Variables.TickCount <= 0
+                       && Variables.TickCount + Game.Ping / 2 + 25 >= this.LastAutoAttackTick + this.AttackDelay * 1000;
             }
             private set
             {
                 if (value)
                 {
-                    this.isFinishAttack = true;
-                    this.LastAutoAttackTick = this.lastAutoAttackOrderTick = this.lastMovementOrderTick = 0;
+                    this.LastAutoAttackTick = 0;
+                    LastTarget = null;
                 }
                 else
                 {
-                    this.isFinishAttack = false;
+                    this.isFinishAttack = this.isResetAttack = false;
                     this.LastAutoAttackTick = Variables.TickCount - Game.Ping / 2;
-                    this.lastAutoAttackOrderTick -= 70 + Math.Min(60, Game.Ping);
-                    this.lastMovementOrderTick -=
-                        this.mainMenu["advanced"]["delayMovement"].GetValue<MenuSlider>().Value;
+                    this.lastMovementOrderTick = 0;
                 }
             }
         }
@@ -236,10 +234,9 @@
         public bool CanMove
             =>
                 GameObjects.Player.CanMove
-                && (!GameObjects.Player.IsCastingInterruptableSpell()
-                    || !GameObjects.Player.IsCastingInterruptableSpell(true))
+                && !GameObjects.Player.IsCastingInterruptableSpell(true)
                 && Variables.TickCount - this.lastMovementOrderTick >= this.mainMenu["advanced"]["delayMovement"]
-                && Variables.TickCount - this.lastAutoAttackOrderTick >= 70 + Math.Min(60, Game.Ping)
+                && this.lastBlockOrderTick - Variables.TickCount <= 0
                 && this.CanCancelAttack;
 
         /// <summary>
@@ -361,7 +358,7 @@
 
                 if (!GameObjects.Player.CanCancelAutoAttack())
                 {
-                    return finishAtk || Variables.TickCount - this.LastAutoAttackTick + Game.Ping / 2 >= 100;
+                    return finishAtk || Variables.TickCount + Game.Ping / 2 >= this.LastAutoAttackTick + 100;
                 }
 
                 var extraWindUp = this.mainMenu["advanced"]["delayWindup"].GetValue<MenuSlider>().Value;
@@ -386,8 +383,8 @@
                 }
 
                 return finishAtk
-                       || Variables.TickCount - this.LastAutoAttackTick + Game.Ping / 2
-                       >= GameObjects.Player.AttackCastDelay * 1000 + extraWindUp;
+                       || Variables.TickCount + Game.Ping / 2
+                       >= this.LastAutoAttackTick + GameObjects.Player.AttackCastDelay * 1000 + extraWindUp;
             }
         }
 
@@ -448,7 +445,7 @@
             }
 
             var eventArgs = new OrbwalkingActionArgs
-                                { Target = gTarget, Process = true, Type = OrbwalkingType.BeforeAttack };
+            { Target = gTarget, Process = true, Type = OrbwalkingType.BeforeAttack };
             this.InvokeAction(eventArgs);
 
             if (!eventArgs.Process)
@@ -463,9 +460,10 @@
 
             if (GameObjects.Player.IssueOrder(GameObjectOrder.AttackUnit, eventArgs.Target))
             {
-                this.lastAutoAttackOrderTick = Variables.TickCount;
                 this.LastTarget = eventArgs.Target;
             }
+
+            this.lastBlockOrderTick = Variables.TickCount + 70 + Math.Min(60, Game.Ping);
         }
 
         /// <summary>
@@ -493,10 +491,11 @@
                 if (GameObjects.Player.Path.Length > 0)
                 {
                     var eventStopArgs = new OrbwalkingActionArgs
-                                            {
-                                                Position = GameObjects.Player.ServerPosition, Process = true,
-                                                Type = OrbwalkingType.StopMovement
-                                            };
+                    {
+                        Position = GameObjects.Player.ServerPosition,
+                        Process = true,
+                        Type = OrbwalkingType.StopMovement
+                    };
                     this.InvokeAction(eventStopArgs);
 
                     if (!eventStopArgs.Process)
@@ -563,7 +562,7 @@
             }
 
             var eventMoveArgs = new OrbwalkingActionArgs
-                                    { Position = position, Process = true, Type = OrbwalkingType.Movement };
+            { Position = position, Process = true, Type = OrbwalkingType.Movement };
             this.InvokeAction(eventMoveArgs);
 
             if (!eventMoveArgs.Process)
@@ -808,6 +807,20 @@
             if (AutoAttack.IsAutoAttackReset(args.SData.Name) && !this.isRengarJumping)
             {
                 this.ResetSwingTimer();
+                switch (GameObjects.Player.ChampionName)
+                {
+                    case "Graves":
+                    case "Lucian":
+                        if (args.Slot == SpellSlot.E)
+                        {
+                            this.isResetAttack = true;
+                        }
+                        break;
+                    case "Vayne":
+                        if (args.Slot == SpellSlot.Q)
+                        { this.isResetAttack = true; }
+                        break;
+                }
             }
         }
 
@@ -829,11 +842,6 @@
             if (this.LastTarget != null && !this.LastTarget.IsValidTarget())
             {
                 this.LastTarget = null;
-            }
-
-            if (!this.CanMove && this.LastTarget == null)
-            {
-                this.isFinishAttack = true;
             }
 
             if (GameObjects.Player.IsDead || MenuGUI.IsChatOpen || MenuGUI.IsShopOpen
@@ -883,15 +891,15 @@
             if (args.Animation.Contains("Spell1") && this.ActiveMode != OrbwalkingMode.None)
             {
                 DelayAction.Add(
-                    args.Animation.EndsWith("c") ? 380 : 285,
+                    args.Animation.EndsWith("c") ? 383 : 281,
                     () =>
-                        {
-                            Game.SendEmote(Emote.Dance);
-                            this.ResetSwingTimer();
-                            GameObjects.Player.IssueOrder(
-                                GameObjectOrder.MoveTo,
-                                GameObjects.Player.Position.Extend(Game.CursorPos, -10));
-                        });
+                    {
+                        Game.SendEmote(Emote.Dance);
+                        this.ResetSwingTimer();
+                        GameObjects.Player.IssueOrder(
+                            GameObjectOrder.MoveTo,
+                            GameObjects.Player.Position.Extend(Game.CursorPos, -10), false);
+                    });
             }
         }
 
@@ -1017,7 +1025,7 @@
                             {
                                 this.orbwalk.InvokeAction(
                                     new OrbwalkingActionArgs
-                                        { Target = minion, Type = OrbwalkingType.NonKillableMinion });
+                                    { Target = minion, Type = OrbwalkingType.NonKillableMinion });
                             }
                             else if (predHealth > 0 && predHealth < GameObjects.Player.GetAutoAttackDamage(minion))
                             {

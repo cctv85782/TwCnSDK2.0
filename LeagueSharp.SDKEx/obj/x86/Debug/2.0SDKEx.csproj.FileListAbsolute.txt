@@ -13,3 +13,4 @@ C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\obj\x86\Debug\LeagueShar
 C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\obj\x86\Debug\2.0SDKEx.csproj.GenerateResource.Cache
 C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\obj\x86\Debug\LeagueSharp.SDKEx.dll
 C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\obj\x86\Debug\LeagueSharp.SDKEx.pdb
+C:\Users\user\Source\Repos\TwCnSDK2.0\LeagueSharp.SDKEx\bin\Debug\LeagueSharp.Data.dll
