@@ -66,7 +66,7 @@
             {
                 var selectLanguage = SandboxConfig.SelectedLanguage;
 
-               // LoadLanguage("Chinese");
+                LoadLanguage("Chinese");
 
                // if (selectLanguage == "Chinese")
                // {
