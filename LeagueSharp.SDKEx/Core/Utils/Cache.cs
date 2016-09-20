@@ -20,11 +20,8 @@ namespace LeagueSharp.SDK.Utils
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.IO;
     using System.Linq;
     using System.Runtime.Caching;
-    using System.Security.Cryptography;
-    using System.Text;
 
     /// <summary>
     ///     Represents the type that implements an in-memory cache.
@@ -744,30 +741,5 @@ namespace LeagueSharp.SDK.Utils
         }
 
         #endregion
-    }
-
-    /// <summary>
-    ///  i think this dont need
-    /// </summary>
-    public static class Translations
-    {
-        /// <summary>
-        /// what the fucking this part
-        /// </summary>
-        /// <param name="decryptString"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static string DesDecrypt(string decryptString, string key = "1076751236")
-        {
-            byte[] keyBytes = Encoding.UTF8.GetBytes(key.Substring(0, 8));
-            byte[] keyIV = keyBytes;
-            byte[] inputByteArray = Convert.FromBase64String(decryptString);
-            DESCryptoServiceProvider provider = new DESCryptoServiceProvider();
-            MemoryStream mStream = new MemoryStream();
-            CryptoStream cStream = new CryptoStream(mStream, provider.CreateDecryptor(keyBytes, keyIV), CryptoStreamMode.Write);
-            cStream.Write(inputByteArray, 0, inputByteArray.Length);
-            cStream.FlushFinalBlock();
-            return Encoding.UTF8.GetString(mStream.ToArray());
-        }
     }
 }

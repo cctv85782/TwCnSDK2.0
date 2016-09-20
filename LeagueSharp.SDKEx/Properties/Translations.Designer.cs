@@ -8,10 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LeagueSharp.SDK.Properties {
+namespace LeagueSharp.SDK.Properties
+{
     using System;
-    
-    
+
+
     /// <summary>
     ///   一個強類型的資源類，用於查找本地化的字符串等。
     /// </summary>
@@ -22,44 +23,52 @@ namespace LeagueSharp.SDK.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Translations {
-        
+    internal class Translations
+    {
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Translations() {
+        internal Translations()
+        {
         }
-        
+
         /// <summary>
         ///   返回此類使用的緩存的 ResourceManager 實例。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
+        internal static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if (object.ReferenceEquals(resourceMan, null))
+                {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LeagueSharp.SDK.Properties.Translations", typeof(Translations).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   使用此強類型資源類，為所有資源查找
         ///   重寫當前線程的 CurrentUICulture 屬性。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
-            get {
+        internal static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   查找類似 
         ///{
@@ -83,12 +92,14 @@ namespace LeagueSharp.SDK.Properties {
         ///    &quot;Darius&quot;: &quot;诺克萨斯之手-德莱厄斯&quot;,
         ///    &quot;Diana&quot;: &quot;皎月 [字符串的其餘部分被截斷]&quot;; 的本地化字符串。
         /// </summary>
-        internal static string ChineseJson {
-            get {
+        internal static string ChineseJson
+        {
+            get
+            {
                 return ResourceManager.GetString("ChineseJson", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   查找類似 
         ///{
@@ -102,11 +113,12 @@ namespace LeagueSharp.SDK.Properties {
         ///    &quot;Ashe&quot;: &quot;\u51b0\u971c\u5c04\u624b-\u827e\u5e0c&quot;,
         ///    &quot;Azir&quot;: &quot;\u86 [字符串的其餘部分被截斷]&quot;; 的本地化字符串。
         /// </summary>
-        internal static string TraditionalChineseJson {
-            get {
+        internal static string TraditionalChineseJson
+        {
+            get
+            {
                 return ResourceManager.GetString("TraditionalChineseJson", resourceCulture);
             }
         }
     }
 }
-
