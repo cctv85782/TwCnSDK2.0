@@ -66,17 +66,17 @@
             {
                 var selectLanguage = SandboxConfig.SelectedLanguage;
 
-                LoadLanguage("Chinese");
+               // LoadLanguage("Chinese");
 
-                if (selectLanguage == "Chinese")
-                {
-                    LoadLanguage("Chinese");
-                }
-                else if (selectLanguage == "Traditional-Chinese")
-                {
-                    LoadLanguage("TraditionalChinese");
-                }
-                else if (selectLanguage == "zh")
+               // if (selectLanguage == "Chinese")
+               // {
+               //     LoadLanguage("Chinese");
+               // }
+               // else if (selectLanguage == "Traditional-Chinese")
+               // {
+               //     LoadLanguage("TraditionalChinese");
+               // }
+                if (selectLanguage == "zh")
                 {
                     LoadLanguage("Chinese");
                 }
