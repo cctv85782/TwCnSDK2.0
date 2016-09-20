@@ -68,18 +68,22 @@
 
                 LoadLanguage("Chinese");
 
-                //if (selectLanguage == "Chinese")
-                //{
-                //    LoadLanguage("Chinese");
-                //}
-                //else if (selectLanguage == "Traditional-Chinese")
-                //{
-                //    LoadLanguage("TraditionalChinese");
-                //}
-                //else
-                //{
-                //    // ignore
-                //}
+                if (selectLanguage == "Chinese")
+                {
+                    LoadLanguage("Chinese");
+                }
+                else if (selectLanguage == "Traditional-Chinese")
+                {
+                    LoadLanguage("TraditionalChinese");
+                }
+                else if (selectLanguage == "zh")
+                {
+                    LoadLanguage("Chinese");
+                }
+                else
+                {
+                    // ignore
+                }
             }
             catch (Exception ex)
             {
