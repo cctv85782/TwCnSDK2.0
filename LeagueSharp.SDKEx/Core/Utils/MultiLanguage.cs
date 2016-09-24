@@ -63,7 +63,7 @@
             try
             {
                 var selectLanguage = SandboxConfig.SelectedLanguage;
-
+ 
                 if (selectLanguage == "Chinese")
                 {
                     LoadLanguage("Chinese");
@@ -72,14 +72,9 @@
                 {
                     LoadLanguage("TraditionalChinese");
                 }
-
-                if (selectLanguage.StartsWith("zh"))
-                {
-                    LoadLanguage("TraditionalChinese");
-                }
                 else
                 {
-                    // ignore
+                    LoadLanguage("TraditionalChinese");
                 }
             }
             catch (Exception ex)
