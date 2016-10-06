@@ -47,10 +47,10 @@ namespace LeagueSharp.SDK
         internal static void Initialize()
         {
             Events.OnLoad += (sender, args) =>
-                {
-                    DamageCollection = Data.Get<DamageDatabase>().Damage;
-                    CreatePassives();
-                };
+            {
+                DamageCollection = Data.Get<DamageDatabase>().Damage;
+                CreatePassives();
+            };
         }
 
         /// <summary>
@@ -118,8 +118,8 @@ namespace LeagueSharp.SDK
             }
 
             var dmg = origin
-                      * (percent > 0 || percent < 0
-                             ? (percent > 0 ? percent : 0)
+                      * (percent > 0
+                             ? percent
                                + (spellBonus.ScalePer100Ap > 0
                                       ? source.TotalMagicalDamage / 100 * spellBonus.ScalePer100Ap
                                       : 0)

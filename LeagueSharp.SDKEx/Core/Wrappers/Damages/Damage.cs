@@ -146,7 +146,7 @@ namespace LeagueSharp.SDK
                         {
                             spoilwarDmg = 320 + (20 * hero.Level);
                         }
-                        if (target.Health < spoilwarDmg)
+                        if (target.Health <= spoilwarDmg)
                         {
                             return float.MaxValue;
                         }
@@ -156,6 +156,7 @@ namespace LeagueSharp.SDK
                 // Bonus Damage (Passive)
                 var passiveInfo = hero.GetPassiveDamageInfo(target);
                 dmgPassive += passiveInfo.Value;
+
                 if (passiveInfo.Override)
                 {
                     return dmgPassive;
@@ -167,7 +168,7 @@ namespace LeagueSharp.SDK
                         dmgPhysical *= 0.9;
                         break;
                     case "Kled":
-                        if (ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Name == "KledRiderQ")
+                        if (targetHero != null && hero.Spellbook.GetSpell(SpellSlot.Q).Name == "KledRiderQ")
                         {
                             dmgPhysical *= 0.8;
                         }
@@ -783,18 +784,6 @@ namespace LeagueSharp.SDK
                 if (targetHero.HasBuff("urgotswapdef"))
                 {
                     amount *= 1 - new[] { 0.3, 0.4, 0.5 }[targetHero.Spellbook.GetSpell(SpellSlot.R).Level - 1];
-                }
-
-                // Yorick P
-                if (targetHero.HasBuff("YorickUnholySymbiosis"))
-                {
-                    amount *= 1
-                              - (GameObjects.Minions.Count(
-                                  g =>
-                                  g.Team == targetHero.Team
-                                  && (g.Name.Equals("Clyde") || g.Name.Equals("Inky") || g.Name.Equals("Blinky")
-                                      || (g.HasBuff("yorickunholysymbiosis")
-                                          && g.GetBuff("yorickunholysymbiosis").Caster.Compare(targetHero)))) * 0.05);
                 }
             }
 
